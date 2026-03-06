@@ -1,0 +1,3 @@
+/home/camilo/Universidad/vision_por_computador/taller1/build/CMakeFiles/Taller1.dir
+/home/camilo/Universidad/vision_por_computador/taller1/build/CMakeFiles/edit_cache.dir
+/home/camilo/Universidad/vision_por_computador/taller1/build/CMakeFiles/rebuild_cache.dir

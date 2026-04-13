@@ -11,3 +11,4 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCV_LIBS})
+target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_DIR="${CMAKE_SOURCE_DIR}")

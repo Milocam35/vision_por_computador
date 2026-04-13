@@ -253,16 +253,16 @@ int main()
         for(int j = 0; j < resultado.cols; j++){
             if(i < rows && j < cols){
                 resultado.at<cv::Vec3b>(i, j) = frame1.at<cv::Vec3b>(i, j);
-            }else if(i < rows && (j > cols && j < cols*2)){
-                resultado.at<cv::Vec3b>(i, j) = frame3.at<cv::Vec3b>(i, j);
-            }else if(i < rows && j > cols*2){
-                resultado.at<cv::Vec3b>(i, j) = frame2.at<cv::Vec3b>(i, j);
-            }else if((i < rows*2 && i > rows) && j < cols){
+            }else if(i < rows && (j >= cols && j < cols*2)){
+                resultado.at<cv::Vec3b>(i, j) = frame3.at<cv::Vec3b>(i, j - cols);
+            }else if(i < rows && j >= cols*2){
+                resultado.at<cv::Vec3b>(i, j) = frame2.at<cv::Vec3b>(i, j - cols*2);
+            }else if((i >= rows && i < rows*2) && j < cols){
                 resultado.at<cv::Vec3b>(i, j) = gray_bgr.at<cv::Vec3b>(i - rows, j);
-            }else if((i < rows*2 && i > rows) && (j > cols && j < cols*2)){
-                resultado.at<cv::Vec3b>(i, j) = rgb_hsv_brillante.at<cv::Vec3b>(i - rows, j);
+            }else if((i >= rows && i < rows*2) && (j >= cols && j < cols*2)){
+                resultado.at<cv::Vec3b>(i, j) = rgb_hsv_brillante.at<cv::Vec3b>(i - rows, j - cols);
             }else{
-                resultado.at<cv::Vec3b>(i, j) = borders_butterfly.at<cv::Vec3b>(i - rows, j);
+                resultado.at<cv::Vec3b>(i, j) = borders_butterfly.at<cv::Vec3b>(i - rows, j - cols*2);
             }
             
         }
@@ -284,7 +284,7 @@ int main()
     {
         for (int j = 100; j < cols - 100; j++)
         {
-            uchar valor = gray_bgr.at<uchar>(i, j);
+            uchar valor = gray1.at<uchar>(i, j);
             uchar bin = (valor > 127) ? 255 : 0;
             resultado3.at<cv::Vec3b>(i, j) = cv::Vec3b(bin, bin, bin);
         }
@@ -299,7 +299,13 @@ int main()
 
     for(int i = 0; i < resultado_dinosaurio1.rows; i++){
         for(int j = 0; j < resultado_dinosaurio1.cols; j++){
-            resultado_dinosaurio1.at<cv::Vec3b>(i, j) = dinosaurio_b.at<cv::Vec3b>(i, j) - dinosaurio_a.at<cv::Vec3b>(i, j);
+            cv::Vec3b pxB = dinosaurio_b.at<cv::Vec3b>(i, j);
+            cv::Vec3b pxA = dinosaurio_a.at<cv::Vec3b>(i, j);
+            resultado_dinosaurio1.at<cv::Vec3b>(i, j) = cv::Vec3b(
+                abs(pxB[0] - pxA[0]),
+                abs(pxB[1] - pxA[1]),
+                abs(pxB[2] - pxA[2])
+            );
         }
     }
 
@@ -346,7 +352,7 @@ int main()
     {
         for (int j = 0; j < dinosaurio_b.cols; j++)
         {
-            if (dino_mask_gray.at<uchar>(i, j) > 30)
+            if (dino_mask_gray.at<uchar>(i, j) > 10)
             {
                 resultado_c.at<cv::Vec3b>(i, j) = dinosaurio_b.at<cv::Vec3b>(i, j);
             }
